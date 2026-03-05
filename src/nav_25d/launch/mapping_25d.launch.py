@@ -12,6 +12,7 @@ def generate_launch_description():
     rtabmap_launch_pkg = get_package_share_directory('rtabmap_launch')
 
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
+    world_file_name = LaunchConfiguration('world_file_name', default='uneven_terrain')
 
     # Simulation
     simulation_launch = IncludeLaunchDescription(
@@ -38,8 +39,8 @@ def generate_launch_description():
             'subscribe_scan_cloud': 'true',
             'scan_cloud_topic': '/velodyne_points',
             'scan_cloud_max_points': '15000',
-            'visual_odometry': 'false', # Use diff drive odom
-            'odom_topic': '/diff_drive_odom',
+            'visual_odometry': 'false', # Use odom
+            'odom_topic': '/odom',
             'qos': '2',
             'queue_size': '20',
             'rviz': 'true', # Open RTAB-Map's RViz for mapping
@@ -51,6 +52,12 @@ def generate_launch_description():
             'use_sim_time',
             default_value='true',
             description='Use simulation (Gazebo) clock if true'),
+
+        DeclareLaunchArgument(
+            'world_file_name',
+            default_value='uneven_terrain',
+            description='World file name without .world extension (outdoor, cabin, uneven_terrain, etc.)'
+        ),
         
         simulation_launch,
         rtabmap_launch

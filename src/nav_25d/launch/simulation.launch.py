@@ -11,6 +11,7 @@ def generate_launch_description():
     
     # Launch arguments
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
+    world_file_name = LaunchConfiguration('world_file_name', default='uneven_terrain')
 
     # Include the robot_description gazebo launch file
     gazebo_launch = IncludeLaunchDescription(
@@ -18,12 +19,18 @@ def generate_launch_description():
             os.path.join(robot_description_pkg, 'launch', 'gazebo.launch.py')
         ),
         launch_arguments={
-            'world_file_name': 'uneven_terrain',
+            'world_file_name': world_file_name,
             'use_sim_time': use_sim_time
         }.items()
     )
 
     return LaunchDescription([
+        DeclareLaunchArgument(
+            'world_file_name',
+            default_value='uneven_terrain',
+            description='World file name without .world extension (outdoor, cabin, uneven_terrain, etc.)'
+        ),
+
         DeclareLaunchArgument(
             'use_sim_time',
             default_value='true',
